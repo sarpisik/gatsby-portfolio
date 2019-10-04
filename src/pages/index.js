@@ -1,21 +1,168 @@
-import React from "react"
-import { Link } from "gatsby"
-
-import Layout from "../components/layout"
-import Image from "../components/image"
+import React, { Fragment } from "react"
+import { Link, graphql } from "gatsby"
+import Img from "gatsby-image"
+import ReactMarkdown from "react-markdown"
+import "../styles/main.css"
+import Header from "../components/header"
+import CopyRight from "../components/copyRight"
+import Contact from "../components/contact"
 import SEO from "../components/seo"
+import { capitalizeLetter } from "../lib/helpers"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
+export const pageQuery = graphql`
+  query IndexQuery {
+    freelanceProjects: allSanityProject(
+      sort: { order: DESC, fields: publishedAt }
+      filter: { categories: { elemMatch: { title: { eq: "freelance" } } } }
+    ) {
+      edges {
+        node {
+          id
+          title
+          markdownBody
+          slug {
+            current
+          }
+          mainImage {
+            asset {
+              fluid(maxWidth: 500) {
+                ...GatsbySanityImageFluid
+              }
+            }
+            alt
+          }
+        }
+      }
+    }
+    demoProjects: allSanityProject(
+      sort: { order: DESC, fields: publishedAt }
+      filter: { categories: { elemMatch: { title: { eq: "demo" } } } }
+    ) {
+      edges {
+        node {
+          id
+          title
+          markdownBody
+          slug {
+            current
+          }
+          mainImage {
+            asset {
+              fluid(maxWidth: 500) {
+                ...GatsbySanityImageFluid
+              }
+            }
+            alt
+          }
+        }
+      }
+    }
+  }
+`
+
+const Intro = props => (
+  <Fragment>
+    <header className="major">
+      <h2>Hi,</h2>
+    </header>
+    {/* <ReactMarkdown {...props} /> */}
+    <p>
+      <strong>Welcome</strong> to my portfolio website.
+    </p>
+    <p>
+      I am a <strong>full stack web developer</strong> who lives his life in
+      coffee, coding, sports and sleep cycles.
+    </p>
+    <p>
+      I build <strong>website applications</strong> with <strong>CMS</strong>{" "}
+      solutions for commercial and non-commercial organizations.
+    </p>
+    <p>
+      Please click below button to if you are interested in the{" "}
+      <strong>
+        <em>skills</em>
+      </strong>{" "}
+      I develop and{" "}
+      <strong>
+        <em>tools</em>
+      </strong>{" "}
+      I use.
+    </p>
+    <ul className="actions">
+      <li>
+        <Link to="/skills" className="button">
+          Skills & Tools
+        </Link>
+      </li>
+    </ul>
+  </Fragment>
+)
+
+const RecentWorks = ({ title, projects }) => (
+  <Fragment>
+    <h2>{capitalizeLetter(`${title} works`)}</h2>
+    <div className="row">
+      {projects.map(project => (
+        <article
+          className="col-6 col-12-xsmall work-item"
+          key={project.node.id}
+        >
+          <Link
+            to={`/${project.node.slug.current}`}
+            className="image fit thumb"
+          >
+            <Img
+              className="image-overlay"
+              imgStyle={{
+                backgroundColor: "red",
+              }}
+              fluid={project.node.mainImage.asset.fluid}
+            />
+          </Link>
+          <h3>{project.node.title}</h3>
+        </article>
+      ))}
     </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
+  </Fragment>
+)
+
+const IndexPage = ({ data }) => (
+  <Fragment>
+    <SEO
+      title="Home"
+      meta={[
+        {
+          name: "keywords",
+          content:
+            "web developer portfolio, web developer full stack, web developer freelance website, contact form, fullstack developer",
+        },
+      ]}
+    />
+    <Header />
+    <div id="main">
+      <section id="one">
+        {/* <Intro source={data.sanityPage.content} /> */}
+        <Intro />
+      </section>
+
+      <section id="two">
+        <RecentWorks
+          title="freelance"
+          projects={data.freelanceProjects.edges}
+        />
+      </section>
+
+      <section id="three">
+        <RecentWorks title="demo" projects={data.demoProjects.edges} />
+      </section>
+
+      <section id="four">
+        <Contact />
+      </section>
+
+      <CopyRight />
+    </div>
+  </Fragment>
 )
 
 export default IndexPage

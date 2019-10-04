@@ -1,0 +1,48 @@
+{
+  "env": {
+    "SANITY_TOKEN": "@portfolio-sanity-token",
+    "SANITY_PROJECT_ID": "@portfolio-sanity-project-id",
+    "SANITY_PROJECT_DATASET": "@portfolio-sanity-project-dataset",
+    "EMAIL_HOST": "@portfolio-email-host",
+    "EMAIL_AUTH_USER": "@portfolio-email-authuser",
+    "EMAIL_AUTH_PASSWORD": "@portfolio-email-password",
+    "EMAIL_SENDER": "@portfolio-email-sender",
+    "EMAIL_RECEIVER": "@portfolio-email-receiver"
+  },
+  "version": 2,
+  "name": "My Portfolio",
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "SANITY_TOKEN": "@portfolio-sanity-token",
+      "SANITY_PROJECT_ID": "@portfolio-sanity-project-id",
+      "SANITY_PROJECT_DATASET": "@portfolio-sanity-project-dataset",
+      "SITE_URL": "@portfolio-website-url",
+      "GOOGLE_TRACK_ID": "@portfolio-google-analytics-track-id"
+    }
+  },
+  "builds": [
+    {
+      "src": "/api/*.js",
+      "use": "@now/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "public"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "methods": ["POST"],
+      "dest": "/api"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}

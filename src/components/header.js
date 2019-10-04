@@ -1,42 +1,80 @@
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React from "react"
+import React, { Fragment } from "react"
+import { useStaticQuery, graphql } from "gatsby"
+import Img from "gatsby-image"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </header>
+const Profile = props => (
+  <span className="image avatar">
+    <Img {...props} />
+  </span>
 )
 
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-}
+const Text = () => (
+  <h1>
+    <strong>I am Sarp IŞIK</strong>,
+    <br />
+    Full Stack Web Developer.
+  </h1>
+)
 
-Header.defaultProps = {
-  siteTitle: ``,
+const ContactIcon = ({ node }) => (
+  <li key={node.name}>
+    <a
+      href={node.url}
+      className={`icon ${node.name === "mail" ? "solid" : "brands"} fa-${
+        node.name === "mail" ? "envelope" : node.name
+      }`}
+    >
+      <span className="label">{node.name}</span>
+    </a>
+  </li>
+)
+
+const ContactIcons = ({ icons }) => (
+  <ul className="icons">{icons.map(ContactIcon)}</ul>
+)
+
+const Header = () => {
+  const data = useStaticQuery(graphql`
+    query {
+      profilePicture: sanitySiteSettings {
+        mainImage {
+          asset {
+            fixed(width: 100) {
+              ...GatsbySanityImageFixed
+            }
+          }
+          alt
+        }
+      }
+      allSanityLink {
+        edges {
+          node {
+            name
+            url
+          }
+        }
+      }
+    }
+  `)
+
+  return (
+    <Fragment>
+      <header id="header" className="background-dark">
+        <div className="inner">
+          <Profile
+            fixed={data.profilePicture.mainImage.asset.fixed}
+            alt="sarp isik avatar"
+          />
+          <Text />
+        </div>
+        <footer id="footer" className="social-icons">
+          <div className="inner">
+            <ContactIcons icons={data.allSanityLink.edges} />
+          </div>
+        </footer>
+      </header>
+    </Fragment>
+  )
 }
 
 export default Header
