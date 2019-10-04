@@ -70,12 +70,12 @@ const Intro = props => (
       <strong>Welcome</strong> to my portfolio website.
     </p>
     <p>
-      I am a <strong>full stack web developer</strong> who lives his life in
-      coffee, coding, sports and sleep cycles.
+      I am a self-taught <strong>full stack web developer</strong> who lives his
+      life in coffee, coding, sports and sleep cycles.
     </p>
     <p>
-      I build <strong>website applications</strong> with <strong>CMS</strong>{" "}
-      solutions for commercial and non-commercial organizations.
+      I build <strong>websites and web based applications</strong> for
+      commercial and non-commercial organizations.
     </p>
     <p>
       Please click below button to if you are interested in the{" "}

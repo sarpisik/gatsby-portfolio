@@ -15,6 +15,14 @@ const Skill = ({ icon, name }) => (
 const Gatsby = () => {
   const data = useStaticQuery(graphql`
     query {
+      sanityIcon: file(relativePath: { eq: "sanity-icon.png" }) {
+        childImageSharp {
+          fluid(maxWidth: 100) {
+            ...GatsbyImageSharpFluid
+            originalName
+          }
+        }
+      }
       strapiIcon: file(relativePath: { eq: "strapi-icon.png" }) {
         childImageSharp {
           fluid(maxWidth: 100) {
@@ -75,7 +83,7 @@ const Skills = () => (
         <Skill icon="devicon-nodejs-plain" name="NODE JS" />
       </div>
       <hr />
-      <h2>JamSTACK</h2>
+      <h2>JAMStack</h2>
       <div className="row">
         <Gatsby />
       </div>
