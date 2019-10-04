@@ -75,8 +75,6 @@ module.exports = ({ body: { name, email, text } }, res) => {
     transporter.sendMail(options, (error, _info) => {
       // If e-mail sent succeed, register new message to sanity db.
       // Else send error.
-      error && console.error("error on sending mail. ", error)
-
       if (error)
         return res.status(500).send({ error, type: "Failed on sending email." })
 
@@ -90,13 +88,10 @@ module.exports = ({ body: { name, email, text } }, res) => {
           })
         )
         // Email sent succeed but registering failed.
-        .catch(
-          error => (
-            console.error("error on registering message data. ", error),
-            res
-              .status(500)
-              .send({ error, type: "Failed on registering email to db." })
-          )
+        .catch(error =>
+          res
+            .status(500)
+            .send({ error, type: "Failed on registering email to db." })
         )
     })
   }
