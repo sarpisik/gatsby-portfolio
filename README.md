@@ -7,6 +7,6 @@
   Sarp IŞIK | Full-Stack Developer
 </h1>
 
-Html5, Css3, ES6, React, React Native, jQuery, Bootstrap, Node JS, NoSQL DB.
+HTML 5, CSS 3, ES 6, React, React Native, jQuery, Bootstrap, Node JS, NoSQL DB.
 
 [Portfolio](https://sarpisik.com)
